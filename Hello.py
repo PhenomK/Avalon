@@ -1,21 +1,26 @@
-from flask import Flask,url_for,redirect,render_template,request
-import redis
+from flask import Flask,render_template,make_response
+import os
+import json
 app = Flask(__name__)
 
+@app.route('/test_post/nn',methods=['GET'])
+def hello_world():
+    path = 'D:/Flask/static/img/'
+    send = []
+    for files in os.listdir(path):
+        #add = path+""+files+""
+        add = files
+        inf = ({files:add})
+        send.append(inf)
+    key = json.dumps(send)
+    res = make_response(key)
+    res.headers['Access-Control-Allow-Origin'] = '*'
+    print(key)
+    return res
 
-@app.route('/',methods=['GET','POST'])
-def submit():
-    if request.method == 'GET':
-        return "hello"
-    else:
-        var_dragon1 = request.form.get('dragon1')
-        var_dragon2 = request.form.get('dragon2')
-
-
-        r = redis.Redis(host= '192.168.83.35',port = 6379,db = 4)
-        r.hmset("activity:15100:951:62891888",{var_dragon1:var_dragon2})
-
-        return "OK"
+@app.route('/index')
+def index():
+    return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
