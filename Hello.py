@@ -8,17 +8,18 @@ def hello_world():
     path = 'D:/Flask/static/img/'
     send = []
     for files in os.listdir(path):
-        #add = path+""+files+""
-        add = files
-        inf = ({files:add})
-        send.append(inf)
+        add = path+""+files+""
+        for files2 in os.listdir(add):
+            inf = ({files:[files2]})
+            send.append(inf)
     key = json.dumps(send)
     res = make_response(key)
     res.headers['Access-Control-Allow-Origin'] = '*'
     print(key)
+
     return res
 
-@app.route('/index')
+@app.route('/')
 def index():
     return render_template('index.html')
 

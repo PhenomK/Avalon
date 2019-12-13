@@ -3,63 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>版本图片</title>
-    <style>
-        *{margin:0;padding:0;font-family:"微软雅黑",Microsoft YaHei,Arial, Helvetica, sans-serif, "宋体";list-style:none;font-weight: normal;}
-        a{ text-decoration:none;}
-        img{ border:0; vertical-align:middle;}
-        ul,li{ list-style:none;}
-        .box{margin:0 auto;padding-top:74px;}
-        .box h1{margin: 10px 20px}
-        .box ul{min-width: 1640px;width: 1640px;}
-        .clearfix:before,.clearfix:after{content:" ";display:table}
-        .clearfix:after{clear: both}
-        .clearfix{*zoom:1}
-        #box li{float: left;margin: 0 10px;border: 1px solid;}
-        .box img{width: 300px;}
-
-    </style>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<div class="box" id="box">
+<div class="option-div">
+    <label>选择语言</label>
+    <select name="pic-select" class="multiselect" id="select-pic">
 
+    </select>
+    <label>是否选中</label>
+    <select name="check-select" id="select-check">
+        <option value=""> </option>
+        <option value="0">未选</option>
+        <option value="1">已选</option>
+    </select>
 </div>
+
+<div class="box" id="box"></div>
 </body>
 <script src="{{url_for('static', filename='jquery-2.1.3.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/app.js')}}"></script>
+<script src="{{url_for('static', filename='js/select.js')}}"></script>
 <script>
-    const len = 5;
-    var ast = [];
-    var html = '';
-    $.ajax({
-        "url": '/test_post/nn',
-        "type": "GET",
-        "dataType": "json",
-        success: function (response) {
-            console.log(response)
-            if (response) {
-                for (var key in response) {
-                    ast.push([]);
-                    for (let j = 0; j < len; j++) {
-                        ast[key].push(response[key][Object.keys(response[key])]+'/'+[Object.keys(response[key])]+ (j + 1) + ".jpg")
-                    }
-                    html += '<div class="earth clearfix">\
-                                     <h1>'+Object.keys(response[key])+'</h1>\
-                                     <ul id='+Object.keys(response[key])+'>\
-                                     </ul>\
-                                 </div>';
-                }
-                console.log(ast);
-                $("#box").html(html);
-                for (var k in response) {
-                    var ht = '';
-                    for (var j=0;j<ast[k].length;j++){
-                        ht += '<li><img src="static/img/'+ast[k][j]+'" alt=""></li>';
-                    }
-                    $("#"+Object.keys(response[k])).html(ht);
-                }
-            }
-        }
-    })
-
-
+    $('.multiselect').multiselect({setMaxOptionNum:4,selectedHtmlValue:' '});
 </script>
 </html>
